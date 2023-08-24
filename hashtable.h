@@ -1,14 +1,30 @@
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
 
-struct table_node {
-    char *key;
+typedef struct hash_node {
+    void *key;
     void *value;
-    struct table_node *next;
-}
+    struct hash_node *next;
+} hash_node;
 
-typedef struct table_node* hashEntry;
+typedef struct hash_table {
+    int size; //(hashmap size)
+    int count; //(number of items stored in hashmap)
+    double load; // (count/ size)
+    double max_load; //max load allowed before resize
+    struct hash_node **buckets;   //array of pointies
+} hash_table;
 
-hashEntry *hashInit(int hashsize);
+hash_table* hashinit(int initial_size);
+
+void hash_insert(hash_table_t *table, void *key, void *value);
+
+void* hash_find(hash_table_t *table, void *key);
+
+void hash_delete(hash_table_t *table, void *key);
+
+static void resize_table(hash_table_t *table);
+
+void hash_free(hash_table_t *table);
 
 #endif
