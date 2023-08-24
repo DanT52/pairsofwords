@@ -20,3 +20,10 @@ after all words have been read in, go through the hashtable and take out the wor
 Use qsort on that array with a custom compare function.
 
 print the top.
+
+
+
+
+
+
+i
