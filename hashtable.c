@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "hashtable.h"
 #include "crc64.h"
 
@@ -64,6 +65,7 @@ int hash_insert(hash_table *table, char* key, void *value){
 }
 
 void resize_table(hash_table *table){
+  printf("resized\n");
   //save old size
   int old_size = table->size; 
 
@@ -75,6 +77,7 @@ void resize_table(hash_table *table){
   struct hash_node **old_buckets = table->buckets;
   //allocate mem for new buckets
   struct hash_node **new_buckets = (hash_node **)malloc(table->size * sizeof(hash_node *));
+  assert(new_buckets != NULL && "resize_table: Memory allocation for new_buckets failed.");
   //set buckets to NULL
   for (int i = 0; i < table->size; i++) {
         new_buckets[i] = NULL;
@@ -87,7 +90,9 @@ void resize_table(hash_table *table){
     struct hash_node *current = table->buckets[i];
     while(current){
       struct hash_node *temp = current;
-      hash_insert(table, current->key, current->value);
+       int result = hash_insert(table, current->key, current->value);
+      // assert to check if hash_insert returned 0
+      assert(result == 0 && "resize_table: hash_insert did not return 0.");
       current = current->next;
       free(temp); //free the old hash_nodes
     }
