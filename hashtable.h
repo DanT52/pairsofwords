@@ -2,8 +2,8 @@
 #define HASHTABLE_H
 
 typedef struct hash_node {
-    void *key;
-    void *value;
+    char* key;
+    void* value;
     struct hash_node *next;
 } hash_node;
 
@@ -15,16 +15,14 @@ typedef struct hash_table {
     struct hash_node **buckets;   //array of pointies
 } hash_table;
 
-hash_table* hashinit(int initial_size);
+hash_table* hash_init(int size, double max_load);
 
-void hash_insert(hash_table_t *table, void *key, void *value);
+int hash_insert(hash_table *table, char* key, void *value);
 
-void* hash_find(hash_table_t *table, void *key);
+void* hash_find(hash_table *table, void *key);
 
-void hash_delete(hash_table_t *table, void *key);
+void resize_table(hash_table *table); // 3x table
 
-static void resize_table(hash_table_t *table);
-
-void hash_free(hash_table_t *table);
+void hash_free(hash_table *table);
 
 #endif
