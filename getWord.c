@@ -19,6 +19,7 @@ char* getNextWord(FILE* fd) {
 
 	/* read characters until we find an alphabetic one (or an EOF) */
 	while ((ch = fgetc(fd)) != EOF) {
+		
 		if (isalpha(ch)) break;
 	}
 	if (ch == EOF) return NULL;		/* if we hit an EOF, we're done */
@@ -28,6 +29,7 @@ char* getNextWord(FILE* fd) {
 
 	/* loop, getting more characters (unless there's an EOF) */
 	while ((ch = fgetc(fd)) != EOF) {
+		
 		/* the word is ended if we encounter whitespace */
 		/* or if we run out of room in the buffer       */
 		if (isspace(ch) || putChar >= DICT_MAX_WORD_LEN - 1) break;

@@ -1,5 +1,5 @@
-paircounting: paircounting.o getWord.o hashtable.o crc64.o
-	gcc -o paircounting paircounting.o getWord.o hashtable.o crc64.o
+pairsofwords: paircounting.o getWord.o hashtable.o crc64.o
+	gcc -o pairsofwords paircounting.o getWord.o hashtable.o crc64.o
 
 paircounting.o: paircounting.c getWord.h hashtable.h
 	gcc -c paircounting.c
@@ -21,4 +21,4 @@ debug:
 	gcc -g -o paircounting paircounting.o getWord.o hashtable.o crc64.o
 
 clean:
-	rm paircounting paircounting.o getWord.o hashtable.o crc64.o
+	rm pairsofwords paircounting.o getWord.o hashtable.o crc64.o

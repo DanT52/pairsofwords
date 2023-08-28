@@ -65,7 +65,8 @@ int hash_insert(hash_table *table, char* key, void *value){
 }
 
 void resize_table(hash_table *table){
-  printf("resized\n");
+  
+  
   //save old size
   int old_size = table->size; 
 
@@ -140,11 +141,13 @@ void* hash_find(hash_table *table, char *key){
 
   //traverse buckets too see if any keys match.
   while (current) {
+    
     if (strcmp(current->key, key) == 0){
 
       //returne value if key match
       return current->value;
     }
+    current = current->next;
   }
   //NULL returned not found.
   return NULL;
