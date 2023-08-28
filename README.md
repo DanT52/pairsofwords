@@ -6,21 +6,20 @@ Systems Programming - CS 360 Assignment 1
 # hash table part
 insert, search, free.
 
-#Ideas
+#TODO
 
-go through each file and hash the pairs of words,
-check if already in hashtable
+add some more comments in paircounting.c
+move the definitions in paircounting.c to paircounting.h
 
-if yes then increment count inside the word_pair struct
+see if there is any optimization i can make with error handling.
 
-if not in table, hash and add to table with count of 0 in word pair struct.
+make sure i get correct outputs vs the provided program
 
-after all words have been read in, go through the hashtable and take out the word_pair structs to make a big array.
+see if i can clean up code throughout.
 
-Use qsort on that array with a custom compare function.
+update readme with compiling directions
 
-print the top.
-
+explain all the functions in their respective .h files.
 
 
 
