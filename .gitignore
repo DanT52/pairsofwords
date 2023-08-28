@@ -1,3 +1,6 @@
 *.out
-test.txt
+*.txt
 .DS_Store
+*.o
+pairsofwords
+settings.json
