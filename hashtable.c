@@ -45,10 +45,10 @@ int hash_insert(hash_table *table, char* key, void *value){
     
   } else { //find last node in chain
     struct hash_node *current = table->buckets[bucket_num];
-    while(current){     
+    while(current->next){     
       current = current->next;
     }
-    current = new_node;
+    current->next = new_node;
     
   }
 
@@ -81,13 +81,13 @@ void resize_table(hash_table *table){
   //set buckets to NULL
   for (int i = 0; i < table->size; i++) {
         new_buckets[i] = NULL;
-    }
+  }
   //add new buckets to table
   table->buckets = new_buckets;
   
   //reinsert all the hash_node elements
   for (int i = 0; i < old_size; i++){
-    struct hash_node *current = table->buckets[i];
+    struct hash_node *current = old_buckets[i];
     while(current){
       struct hash_node *temp = current;
        int result = hash_insert(table, current->key, current->value);
@@ -99,4 +99,53 @@ void resize_table(hash_table *table){
   }
   free(old_buckets); //free the old bucket pointer array
   
+}
+
+
+void hash_free(hash_table *table, void (*free_value)(void* val)){
+
+  //for each bucket in the hashtable
+  for (int i = 0; i < table->size; i++) {
+    
+    struct hash_node *current = table->buckets[i];
+
+    //traverse the buckets Linked List free each item.
+    while (current) {
+      
+      struct hash_node *temp = current;
+      current = current->next;
+      free(temp->key);
+
+      //if a free function for the void* value is provided use it.
+      if(free_value)free_value(temp->value);
+      
+      free(temp);
+    }
+    
+    
+  }
+
+  //free the buckets array  and the table itself.
+  free(table->buckets);
+  free(table);
+
+}
+
+void* hash_find(hash_table *table, char *key){
+
+  //hash the key to know which bucket
+  int bucket_num = crc64(key) % table->size;
+
+  struct hash_node *current = table->buckets[bucket_num];
+
+  //traverse buckets too see if any keys match.
+  while (current) {
+    if (strcmp(current->key, key) == 0){
+
+      //returne value if key match
+      return current->value;
+    }
+  }
+  //NULL returned not found.
+  return NULL;
 }

@@ -19,10 +19,10 @@ hash_table* hash_init(int size, double max_load);
 
 int hash_insert(hash_table *table, char* key, void *value);
 
-void* hash_find(hash_table *table, void *key);
+void* hash_find(hash_table *table, char *key);
 
 void resize_table(hash_table *table); // 3x table
 
-void hash_free(hash_table *table);
+void hash_free(hash_table *table, void (*free_value)(void* val));
 
 #endif
