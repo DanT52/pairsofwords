@@ -1,20 +1,7 @@
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "getWord.h"
-#include "hashtable.h"
-
-typedef struct word_pair_count {
-    char* wordpair;
-    int count;
-}word_pair_count;
-
-word_pair_count ** wordpairs_array(hash_table *table);
+#include "paircounting.h"
 
 
-int read_files(hash_table *table, int num_of_files, char **file_names);
-
-char* combine_words(char* word1, char* word2);
 
 char* combine_words(char* word1, char* word2){
     //reqired length is word1+word2 +space + \0
@@ -35,7 +22,6 @@ int read_files(hash_table *table, int num_of_files, char **file_names){
     char *wordpair;
 
     for (int i = 0; i < num_of_files; i++){ //run for each file given
-        
 
         FILE *fp = NULL;
         fp = fopen(file_names[i+2], "r");//open file
@@ -80,9 +66,7 @@ int read_files(hash_table *table, int num_of_files, char **file_names){
             word1 = word2;
         }
         free(word1);
-        
         fclose(fp);
-        
     }
     return 0;
 
@@ -150,53 +134,3 @@ void print_hash_table(hash_table *table) {
 
 
 
-int main (int argc, char **argv) {
-    int num_files_to_read = argc-2;
-
-    int top_pairs_to_print;
-    char dash;
-    // The number of files to read is argc -1 
-    if ((argc < 2)|| (sscanf(argv[1], "%c%d",&dash, &top_pairs_to_print) != 2) || (dash != '-') || (top_pairs_to_print <1)){
-
-        fprintf(stderr, "Usage: %s <-count> <file1> <file2> ... \n",argv[0] );
-        exit(1);
-    }
-
-    struct hash_table *table = hash_init(10, .7);
-    if(!table){
-        fprintf(stderr, "ERROR: Table initialization Failed.\n");
-        exit(1);
-    }
-    int result = read_files(table, num_files_to_read, argv);
-    if (result == 1){
-        hash_free(table, free);
-        fprintf(stderr, "ERROR: Failed to open file.\n");
-        exit(1);
-    }else if(result == 2){
-        hash_free(table, free);
-        fprintf(stderr, "ERROR: Hash Memory allocation failed.\n");
-        exit(1);
-    }
-    if(top_pairs_to_print > table->count){
-        fprintf(stderr, "ERROR: Not enough Word pairs Read to Print..\n.");
-        hash_free(table, free);
-        exit(1);
-    }
-
-    struct word_pair_count **wordpair_array = wordpairs_array(table);
-    if(!wordpair_array){
-        fprintf(stderr, "ERROR: Word Pair Array allocation Failed.\n");
-        hash_free(table, free);
-        exit(1);
-    }
-
-    qsort(wordpair_array, table->count, sizeof(word_pair_count*), compare_wordpairs_counts);
-
-    for (int i = 0; i < top_pairs_to_print; i++){
-        printf("%10d %s\n", wordpair_array[i]->count, wordpair_array[i]->wordpair);
-    }
-    free_wordpairs_array(wordpair_array, table->count);
-
-    hash_free(table, free);
-
-}

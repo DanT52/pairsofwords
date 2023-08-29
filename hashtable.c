@@ -1,9 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
 #include "hashtable.h"
-#include "crc64.h"
+
 
 hash_table* hash_init(int size, double max_load){
   //allocate for the hashtable
