@@ -1,6 +1,5 @@
 #include "hashtable.h"
 
-
 hash_table* hash_init(int size, double max_load){
   //allocate for the hashtable
   hash_table* hash_entry = (hash_table *)malloc(sizeof(hash_table));
@@ -16,6 +15,7 @@ hash_table* hash_init(int size, double max_load){
   //set values where buckets to NULL
   for (int i = 0; i < size; i++) hash_entry->buckets[i] = NULL;
 
+  //initial values
   hash_entry->size = size;
   hash_entry->count = 0;
   hash_entry->load = 0.0;
@@ -25,21 +25,21 @@ hash_table* hash_init(int size, double max_load){
 }
 
 int hash_insert(hash_table *table, char* key, void *value){
-
+ //allocate new node
   struct hash_node *new_node = (hash_node *)malloc(sizeof(hash_node));
+  if (!new_node) return 1; //malloc fail
+
   new_node->key=key;
   new_node->value=value;
   new_node->next=NULL;
-
-  if (!new_node) return 1;
-
-  int bucket_num = crc64(key) % table->size;
+  
+  int bucket_num = crc64(key) % table->size; //hash key to a bucket
 
   //the bucket is empty
   if (!table->buckets[bucket_num]){
     table->buckets[bucket_num] = new_node;
     
-  } else { //find last node in chain
+  } else { //find last node in chain insert new node at end
     struct hash_node *current = table->buckets[bucket_num];
     while(current->next){     
       current = current->next;
@@ -47,7 +47,6 @@ int hash_insert(hash_table *table, char* key, void *value){
     current->next = new_node;
     
   }
-
   //update stats
   table->count+=1;
   table->load = table->count/table->size;
@@ -61,8 +60,6 @@ int hash_insert(hash_table *table, char* key, void *value){
 }
 
 void resize_table(hash_table *table){
-  
-  
   //save old size
   int old_size = table->size; 
 
@@ -105,23 +102,16 @@ void hash_free(hash_table *table, void (*free_value)(void* val)){
   for (int i = 0; i < table->size; i++) {
     
     struct hash_node *current = table->buckets[i];
-
     //traverse the buckets Linked List free each item.
     while (current) {
-      
       struct hash_node *temp = current;
       current = current->next;
       free(temp->key);
-
       //if a free function for the void* value is provided use it.
       if(free_value)free_value(temp->value);
-      
       free(temp);
     }
-    
-    
   }
-
   //free the buckets array  and the table itself.
   free(table->buckets);
   free(table);
@@ -129,17 +119,14 @@ void hash_free(hash_table *table, void (*free_value)(void* val)){
 }
 
 void* hash_find(hash_table *table, char *key){
-
   //hash the key to know which bucket
   int bucket_num = crc64(key) % table->size;
 
   struct hash_node *current = table->buckets[bucket_num];
-
   //traverse buckets too see if any keys match.
   while (current) {
     
     if (strcmp(current->key, key) == 0){
-
       //returne value if key match
       return current->value;
     }

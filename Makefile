@@ -25,6 +25,13 @@ paircounting.o: paircounting.c paircounting.h getWord.h hashtable.h
 pairsofwords.o: pairsofwords.c hashtable.h paircounting.h
 	$(CC) -c pairsofwords.c
 
+
+# run
+
+run: pairsofwords
+	./pairsofwords
+
+	
 # clean target
 clean:
 	rm -f $(OBJS) pairsofwords
