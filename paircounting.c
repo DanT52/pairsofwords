@@ -3,6 +3,7 @@
 
 
 
+
 char* combine_words(char* word1, char* word2){
     //reqired length is word1+word2 +space + \0
 

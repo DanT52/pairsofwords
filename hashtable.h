@@ -7,11 +7,14 @@
 #include <assert.h>
 #include "crc64.h"
 
+//hash node struct
+//keys are strings and values are void pointers.
 typedef struct hash_node {
     char* key;
     void* value;
     struct hash_node *next;
 } hash_node;
+
 
 typedef struct hash_table {
     int size; //(hashmap size)
@@ -21,6 +24,8 @@ typedef struct hash_table {
     struct hash_node **buckets;   //array of pointies
 } hash_table;
 
+//initializes hashtable. Size is the number of initial buckets being added.
+//max_load is a double representing the max_load allowed before the hashtable size is trippled.
 hash_table* hash_init(int size, double max_load);
 
 int hash_insert(hash_table *table, char* key, void *value);
