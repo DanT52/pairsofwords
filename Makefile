@@ -1,24 +1,30 @@
-pairsofwords: paircounting.o getWord.o hashtable.o crc64.o
-	gcc -o pairsofwords paircounting.o getWord.o hashtable.o crc64.o
 
-paircounting.o: paircounting.c getWord.h hashtable.h
-	gcc -c paircounting.c
+CC = gcc
+CFLAGS = -Wall
 
-getWord.o: getWord.c getWord.h
-	gcc -c getWord.c
+# object files
+OBJS = crc64.o hashtable.o getWord.o paircounting.o pairsofwords.o
+
+# main target
+pairsofwords: $(OBJS)
+	$(CC) $(CFLAGS) -o pairsofwords $(OBJS)
+
+# dependencies
+crc64.o: crc64.c crc64.h
+	$(CC) $(CFLAGS) -c crc64.c
 
 hashtable.o: hashtable.c hashtable.h crc64.h
-	gcc -c hashtable.c
+	$(CC) $(CFLAGS) -c hashtable.c
 
-crc64.o: crc64.c crc64.h
-	gcc -c crc64.c
+getWord.o: getWord.c getWord.h
+	$(CC) $(CFLAGS) -c getWord.c
 
-debug:
-	gcc -g -c getWord.c
-	gcc -g -c hashtable.c
-	gcc -g -c crc64.c
-	gcc -g -c paircounting.c
-	gcc -g -o paircounting paircounting.o getWord.o hashtable.o crc64.o
+paircounting.o: paircounting.c paircounting.h getWord.h hashtable.h
+	$(CC) $(CFLAGS) -c paircounting.c
 
+pairsofwords.o: pairsofwords.c hashtable.h paircounting.h
+	$(CC) $(CFLAGS) -c pairsofwords.c
+
+# clean target
 clean:
-	rm pairsofwords paircounting.o getWord.o hashtable.o crc64.o
+	rm -f $(OBJS) pairsofwords
