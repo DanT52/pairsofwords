@@ -26,6 +26,7 @@ typedef struct hash_table {
 
 //initializes hashtable. Size is the number of initial buckets being added.
 //max_load is a double representing the max_load allowed before the hashtable size is trippled.
+//max load is the max (count/size) allowed before the tabled is resized by a factor of 3.
 //returns NULL if malloc failed
 hash_table* hash_init(int size, double max_load);
 
