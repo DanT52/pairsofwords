@@ -22,7 +22,7 @@ int read_files(hash_table *table, int num_of_files, char **file_names){
 
         FILE *fp = NULL;
         fp = fopen(file_names[i+2], "r");//open file
-        if (!fp)return 1; //failed to open
+        if (!fp)return i+2; //failed to open
 
         word1 =getNextWord(fp); //get the first word
         if (!word1){ //empty file
@@ -38,7 +38,7 @@ int read_files(hash_table *table, int num_of_files, char **file_names){
                 free(word1);
                 free(word2);
                 fclose(fp);
-                return 2;
+                return 1;
             }
 
             //see if wordpair already in table
@@ -51,7 +51,7 @@ int read_files(hash_table *table, int num_of_files, char **file_names){
                     free(word1);
                     free(word2);
                     fclose(fp);
-                    return 2;
+                    return 1;
                 }
             }else{ // wordpair already in table increment value
                 (*(int*)ptr)++;

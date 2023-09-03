@@ -28,7 +28,7 @@ pairsofwords.o: pairsofwords.c hashtable.h paircounting.h
 
 # run
 
-run: pairsofwords
+run: pairsofwords -5 mobydick.txt
 	./pairsofwords
 
 	

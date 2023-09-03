@@ -26,7 +26,7 @@ void free_wordpairs_array(word_pair_count ** wordpair_array, int size);
 //reads the strings from index 2 as file names and attemps to open and read the wordpairs.
 //the wordpairs are stored in the hashtable with the key being the wordpair and the count 
 //the number of times the pair occured.
-//returned 1, failed to open, returned 2, malloc fail, returned 0 sucess.
+//returned < 2 failed to open file, returned 1, malloc fail, returned 0 sucess.
 int read_files(hash_table *table, int num_of_files, char **file_names);
 
 //combines two strings into a new allocated string with a space in between.

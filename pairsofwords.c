@@ -37,8 +37,11 @@ int main (int argc, char **argv) {
 
     //read the wordpairs into hashtable
     int result = read_files(table, num_files_to_read, argv);
-    if (result == 1)error_exit("ERROR: Failed to open file.\n", table);
-    if(result == 2)error_exit("ERROR: Hash Memory allocation failed.\n", table);
+    if (result >= 2){
+        fprintf(stderr, "ERROR: Can't read file '%s'\n", argv[result]);
+        error_exit("", table);
+    }
+    if(result == 1)error_exit("ERROR: Hash Memory allocation failed.\n", table);
   
     //ensure enough wordpairs were read in.
     if(top_pairs_to_print > table->count)error_exit("ERROR: Not enough Word pairs Read to Print..\n.", table);
